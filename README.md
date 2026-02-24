@@ -219,5 +219,3 @@ improves relevance quality.
 ✔ Reranking\
 ✔ Hybrid search\
 ✔ Redis caching
-
-Test A fully implemented.
