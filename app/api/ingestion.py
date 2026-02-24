@@ -23,7 +23,6 @@ async def ingest_data(
     user=Depends(get_current_user),
 ):
     try:
-        # 🔹 1. Save structured data first
         new_record = FinancialData(
             symbol=symbol,
             price=price,
@@ -35,10 +34,8 @@ async def ingest_data(
         await db.commit()
         await db.refresh(new_record)
 
-        # 🔹 2. Generate embedding (external call)
         embedding = await get_embedding(news)
 
-        # 🔹 3. Store in vector DB
         upsert_vector(
             record_id=new_record.id,
             vector=embedding,
@@ -50,7 +47,6 @@ async def ingest_data(
             },
         )
 
-        # 🔹 4. Broadcast to WebSocket clients
         await broadcast({
             "symbol": symbol,
             "price": price,
